@@ -1,0 +1,13 @@
+// Sample Custom LESS file that will be compiled to custom.css and custom.min.css
+
+/* Mixin */
+.border-radius (@radius: 5px) {
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+    border-radius: @radius;
+}
+ 
+/* Implementation */
+#somediv {
+    .border-radius(15px);
+} 
