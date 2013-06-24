@@ -11,5 +11,21 @@ public class Application extends Controller {
         return ok(index.render("Beer Snob Comming Soon!","BeerSnob"));
        
     }
+    
+    public static Result beers() {
+    	return TODO;
+    }
+    
+    public static Result newBeer() {
+    	return TODO;
+    }
+    
+    public static Result deleteBeer() {
+    	return TODO;
+    }
+    
+    public static Result updateBeer() {
+    	return TODO;
+    }
   
 }

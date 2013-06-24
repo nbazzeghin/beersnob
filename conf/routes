@@ -5,6 +5,9 @@
 # Home page
 GET     /                           controllers.Application.index()
 
+GET 	/beers						controllers.Application.beers()
+POST 	/beers						controllers.Application.newBeer()
+
 # Twitter Bootstrap Glyphicons path settings
 GET     /assets/img/glyphicons-halflings-white.png      controllers.Assets.at(path="/public", file="/images/glyphicons-halflings-white.png")
 GET     /assets/img/glyphicons-halflings.png            controllers.Assets.at(path="/public", file="/images/glyphicons-halflings.png")
