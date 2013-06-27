@@ -1,8 +1,12 @@
 package controllers;
 
+import org.jongo.MongoCollection;
+
+import models.Beer;
 import play.*;
 import play.mvc.*;
 
+import uk.co.panaxiom.playjongo.PlayJongo;
 import views.html.*;
 
 public class Application extends Controller {
@@ -13,7 +17,9 @@ public class Application extends Controller {
     }
     
     public static Result beers() {
-    	return TODO;
+    	MongoCollection beers = PlayJongo.getCollection("beers");
+    	Beer beer = beers.findOne().as(Beer.class);
+    	return ok(index.render(beer.toString(), "Beers"));
     }
     
     public static Result newBeer() {

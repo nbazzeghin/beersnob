@@ -3,20 +3,20 @@ package models;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Beer {
-	public Long id;
-	public String name;
-	
-	public static List<Beer> all() {
-		return new ArrayList<Beer>();
-	}
-	
-	public static void create(Beer beer) {
-		
-	}
-	
-	public static void delete(Long id) {
-		
-	}
+import org.jongo.MongoCollection;
+import org.jongo.marshall.jackson.oid.Id;
 
+import com.mongodb.WriteResult;
+
+import de.undercouch.bson4jackson.types.ObjectId;
+
+import uk.co.panaxiom.playjongo.PlayJongo;
+
+public class Beer {
+	
+	@Id
+	public ObjectId id;
+	public String name;
+	public int ac;
+	
 }

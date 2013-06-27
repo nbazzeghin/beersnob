@@ -11,7 +11,9 @@ object ApplicationBuild extends Build {
     // Add your project dependencies here,
     javaCore,
     javaJdbc,
-    javaEbean
+    javaEbean,
+    
+    "uk.co.panaxiom" %% "play-jongo" % "0.4"
   )
 
 	// Only compile the bootstrap bootstrap.less file and any other *.less file in the stylesheets directory 
@@ -23,7 +25,14 @@ object ApplicationBuild extends Build {
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here
-    lessEntryPoints <<= baseDirectory(customLessEntryPoints)      
+    lessEntryPoints <<= baseDirectory(customLessEntryPoints),
+    resolvers += Resolver.url("My GitHub Play Repository", url("http://alexanderjarvis.github.com/releases/"))(Resolver.ivyStylePatterns) 
   )
+  
+  object Resolvers {
+      	val githubRepository = "LeoDagDag repository" at "http://leodagdag.github.com/repository/"
+     	val dropboxRepository = "Dropbox repository" at "http://dl.dropbox.com/u/18533645/repository/"
+    	val morphiaRepository = "Morphia repository" at "http://morphia.googlecode.com/svn/mavenrepo/"
+	}
 
 }
