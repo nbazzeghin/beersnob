@@ -1,22 +1,22 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jongo.MongoCollection;
 import org.jongo.marshall.jackson.oid.Id;
-
-import com.mongodb.WriteResult;
-
-import de.undercouch.bson4jackson.types.ObjectId;
-
-import uk.co.panaxiom.playjongo.PlayJongo;
 
 public class Beer {
 	
 	@Id
-	public ObjectId id;
+	private String id;
 	public String name;
-	public int ac;
+	public Double ac;
+	public String brewery;
+	public String tags;
+	public String notes;
+	public Double rating;
+	public String imgId;
+
+	
+	public String getId(){
+		return this.id;
+	}
 	
 }
