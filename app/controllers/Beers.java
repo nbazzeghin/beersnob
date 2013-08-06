@@ -16,6 +16,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.jongo.MongoCollection;
 
 import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
 
 import models.Beer;
@@ -91,6 +92,18 @@ public class Beers extends Controller {
     	//TODO: Fix imgId so we can updated image w/ this as well.
     	beers.update(new ObjectId(id)).with(request().body().asJson().toString());    	
     	return ok();
+    }
+    
+    public static Result getBeerImg(String id) {
+    	GridFSDBFile img = gfs.find(new ObjectId(id));
+    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    	try {
+			img.writeTo(baos);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return ok(baos.toByteArray()).as("image/png");
     }
   
 }

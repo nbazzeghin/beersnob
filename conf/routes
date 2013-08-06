@@ -9,6 +9,7 @@ GET 	/beers						controllers.Beers.listBeers()
 POST 	/beer						controllers.Beers.newBeer()
 PUT		/beer/:id					controllers.Beers.updateBeer(id: String)
 DELETE	/beer/:id					controllers.Beers.deleteBeer(id: String)
+GET		/bimg/:id					controllers.Beers.getBeerImg(id: String)
 
 # Twitter Bootstrap Glyphicons path settings
 GET     /assets/img/glyphicons-halflings-white.png      controllers.Assets.at(path="/public", file="/images/glyphicons-halflings-white.png")
