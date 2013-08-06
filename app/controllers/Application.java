@@ -9,12 +9,17 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
+import org.bson.types.ObjectId;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.jongo.MongoCollection;
 
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSInputFile;
 
 import models.Beer;
+import play.Logger;
 import play.mvc.*;
 
 import play.libs.Json;
@@ -38,13 +43,25 @@ public class Application extends Controller {
     	return ok(Json.toJson(all));
     }
     
+    @BodyParser.Of(BodyParser.Json.class)
     public static Result newBeer() {
     	GridFSInputFile gfsImg = null;
-    	Beer beer = new Beer();
-    	beer.name = "Ultra Cool Bud";
-    	beer.ac = 10.0;
+    	ObjectMapper mapper = new ObjectMapper();
+    	Beer beer = null;
+		try {
+			beer = mapper.readValue(request().body().asJson(),Beer.class);
+			beers.save(beer);
+		} catch (JsonParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (JsonMappingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
     	
-    	beers.save(beer);
     	
     	try {
 			BufferedImage img = ImageIO.read(new URL("http://wwwimages.harpoonbrewery.com/SummerBeer-2013-Modal.jpg"));
@@ -52,8 +69,10 @@ public class Application extends Controller {
 			ImageIO.write(img, "jpg", baos);
 			baos.flush();
 			gfsImg = gfs.createFile(baos.toByteArray());
-			gfsImg.setFilename("m0arbeer.jpg");
+			gfsImg.setFilename("bestbeer.jpg");
 			gfsImg.save();
+			beer.imgId = gfsImg.getId().toString();
+	    	beers.save(beer);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,17 +81,21 @@ public class Application extends Controller {
 			e.printStackTrace();
 		}
     	
-    	return ok(Json.toJson(gfsImg.getId().toString()));
+    	return ok(Json.parse("{\"beerId\":\"" + beer.getId() +"\"}"));
     }
     
-    public static Result deleteBeer() {
+    public static Result deleteBeer(String id) {
     	
-    	beers.remove();
+    	Logger.info("Deleting beer ID: " + new ObjectId(id).toString());
+    	beers.remove(new ObjectId(id));
     	return ok();
     }
     
-    public static Result updateBeer() {
-    	return TODO;
+    @BodyParser.Of(BodyParser.Json.class)
+    public static Result updateBeer(String id) {
+    	//TODO: Fix imgId so we can updated image w/ this as well.
+    	beers.update(new ObjectId(id)).with(request().body().asJson().toString());    	
+    	return ok();
     }
   
 }
